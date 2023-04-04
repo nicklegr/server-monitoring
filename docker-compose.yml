@@ -29,3 +29,11 @@ services:
     ports:
       - 9093:9093
     restart: unless-stopped
+
+  alertmanager-discord:
+    image: benjojo/alertmanager-discord
+    ports:
+      - 9094:9094
+    environment:
+      - DISCORD_WEBHOOK=$DISCORD_WEBHOOK
+    restart: unless-stopped
