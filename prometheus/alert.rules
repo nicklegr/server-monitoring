@@ -9,3 +9,11 @@ groups:
     annotations:
       summary: "Instance {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+  - alert: degraded_md_array
+    expr: sum(node_md_disks{instance="node-exporter:9100",state="failed"}) != 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Degraded MD Array"
+      description: "Some disk in MD Array is failed state"
