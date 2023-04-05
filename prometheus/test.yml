@@ -15,10 +15,12 @@ tests:
             values: '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'
           - series: 'up{job="node_exporter", instance="localhost:9100"}'
             values: '1+0x6 0 0 0 0 0 0 0 0' # 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0
-
+          - series: 'node_filesystem_avail_bytes{mountpoint="/home/data/std-36"}'
+            values: '5000+0x6 900+0x8'
+          - series: 'node_filesystem_size_bytes{mountpoint="/home/data/std-36"}'
+            values: '10000+0x14'
       # Unit test for alerting rules.
       alert_rule_test:
-          # Unit test 1.
           - eval_time: 10m
             alertname: instance_down
             exp_alerts:
@@ -30,3 +32,13 @@ tests:
                   exp_annotations:
                       summary: "Instance localhost:9090 down"
                       description: "localhost:9090 of job prometheus has been down for more than 5 minutes."
+          - eval_time: 10m
+            alertname: std-latest_free_space_low
+            exp_alerts:
+                # Alert 1.
+                - exp_labels:
+                      mountpoint: /home/data/std-36
+                      severity: critical
+                  exp_annotations:
+                      summary: "std-latest free space low"
+                      description: "std-latest disk space used: 91 %"

@@ -17,3 +17,11 @@ groups:
     annotations:
       summary: "Degraded MD Array"
       description: "Some disk in MD Array is failed state"
+  - alert: std-latest_free_space_low
+    expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/home/data/std-36"} * 100) / node_filesystem_size_bytes{mountpoint="/home/data/std-36"}) > 90
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "std-latest free space low"
+      description: "std-latest disk space used: {{ .Value }} %"
