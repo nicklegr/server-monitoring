@@ -20,7 +20,9 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--path.rootfs=/rootfs'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.systemd'
+      - '--collector.processes'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|run|var|boot)($$|/)'
     ports:
       - 9100:9100
     restart: unless-stopped
