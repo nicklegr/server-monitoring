@@ -37,7 +37,10 @@ services:
     image: prom/alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager
-    command: "--config.file=/etc/alertmanager/config.yml"
+      - alertmanager:/data
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/data/"
     ports:
       - 9093:9093
     restart: unless-stopped
@@ -53,3 +56,4 @@ services:
 volumes:
   prometheus:
   grafana:
+  alertmanager:
