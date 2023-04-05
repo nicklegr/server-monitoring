@@ -1,7 +1,7 @@
 version: '3'
 services:
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.43.0
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus:/prometheus
@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.5.0
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:9.4.7
     volumes:
       - grafana:/var/lib/grafana
     ports:
@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
 
   alertmanager:
-    image: prom/alertmanager
+    image: prom/alertmanager:v0.25.0
     volumes:
       - ./alertmanager:/etc/alertmanager
       - alertmanager:/data
@@ -48,7 +48,7 @@ services:
     restart: unless-stopped
 
   alertmanager-discord:
-    image: benjojo/alertmanager-discord
+    image: benjojo/alertmanager-discord@sha256:7d27cd8494b269fe592cf6a9d7f6bdf14ac628bba34c381dc43cf533eaa95158
     ports:
       - 9094:9094
     environment:
