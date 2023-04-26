@@ -9,6 +9,7 @@ groups:
     annotations:
       summary: "Instance {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+
   - alert: degraded_md_array
     expr: sum(node_md_disks{instance="node-exporter:9100",state="failed"}) != 0
     for: 1m
@@ -17,6 +18,34 @@ groups:
     annotations:
       summary: "Degraded MD Array"
       description: "Some disk in MD Array is failed state"
+
+  - alert: SMART_Offline_uncorrectable
+    expr: sum(smartmon_offline_uncorrectable_raw_value{instance="node-exporter:9100"}) != 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "SMART: Offline uncorrectable"
+      description: "Offline uncorrectable sector found"
+
+  - alert: SMART_Current_pending_sector
+    expr: sum(smartmon_current_pending_sector_raw_value{instance="node-exporter:9100"}) != 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "SMART: Current pending sector"
+      description: "Pending sector found"
+
+  - alert: SMART_Reallocated_sector_count
+    expr: sum(smartmon_reallocated_sector_ct_raw_value{instance="node-exporter:9100"}) != 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "SMART: Reallocated sector count"
+      description: "Reallocated sector found"
+
   - alert: std-36_free_space_low
     expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/home/data/std-36"} * 100) / node_filesystem_size_bytes{mountpoint="/home/data/std-36"}) > 90
     for: 1m

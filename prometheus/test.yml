@@ -19,6 +19,12 @@ tests:
             values: '5000+0x6 900+0x8'
           - series: 'node_filesystem_size_bytes{mountpoint="/home/data/std-36"}'
             values: '10000+0x14'
+          - series: 'smartmon_offline_uncorrectable_raw_value{instance="node-exporter:9100"}'
+            values: '0+0x6 1+0x8'
+          - series: 'smartmon_current_pending_sector_raw_value{instance="node-exporter:9100"}'
+            values: '0+0x6 1+0x8'
+          - series: 'smartmon_reallocated_sector_ct_raw_value{instance="node-exporter:9100"}'
+            values: '0+0x6 1+0x8'
       # Unit test for alerting rules.
       alert_rule_test:
           - eval_time: 10m
@@ -32,6 +38,37 @@ tests:
                   exp_annotations:
                       summary: "Instance localhost:9090 down"
                       description: "localhost:9090 of job prometheus has been down for more than 5 minutes."
+
+          - eval_time: 10m
+            alertname: SMART_Offline_uncorrectable
+            exp_alerts:
+                # Alert 1.
+                - exp_labels:
+                      severity: critical
+                  exp_annotations:
+                      summary: "SMART: Offline uncorrectable"
+                      description: "Offline uncorrectable sector found"
+
+          - eval_time: 10m
+            alertname: SMART_Current_pending_sector
+            exp_alerts:
+                # Alert 1.
+                - exp_labels:
+                      severity: critical
+                  exp_annotations:
+                      summary: "SMART: Current pending sector"
+                      description: "Pending sector found"
+
+          - eval_time: 10m
+            alertname: SMART_Reallocated_sector_count
+            exp_alerts:
+                # Alert 1.
+                - exp_labels:
+                      severity: critical
+                  exp_annotations:
+                      summary: "SMART: Reallocated sector count"
+                      description: "Reallocated sector found"
+
           - eval_time: 10m
             alertname: std-36_free_space_low
             exp_alerts:
