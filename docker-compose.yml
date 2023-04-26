@@ -15,6 +15,7 @@ services:
   node-exporter:
     image: prom/node-exporter:v1.5.0
     volumes:
+      - ./node-exporter:/etc/node-exporter
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
@@ -25,6 +26,7 @@ services:
       - '--collector.systemd'
       - '--collector.processes'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|run|var|boot)($$|/)'
+      - '--collector.textfile.directory=/etc/node-exporter/collector'
     ports:
       - 9100:9100
     restart: unless-stopped
